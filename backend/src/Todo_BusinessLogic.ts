@@ -34,7 +34,7 @@ export async function createNewTodoItem(newTodoItem: CreateTodoRequest, userId: 
         name: newTodoItem.name,
         dueDate: newTodoItem.dueDate,
         done: false,
-        attachmentUrl: 'https://${process.env.S3_BUCKET_NAME}.s3.eu-west-1.amazonaws.com/${TodoUUID}'
+        attachmentUrl: 'https://'+process.env.S3_BUCKET_NAME+'.s3.eu-west-1.amazonaws.com/'+TodoUUID //changed ' from overall to support variables
     }
     )
     return newItem
@@ -58,17 +58,18 @@ export async function uploadURL(UploadURL:string) {
     const presignedUrl = s3.getSignedUrl('putObject', { // The URL will allow to perform the PUT operation
         Bucket: process.env.S3_BUCKET_NAME, // Name of an S3 bucket
         Key: UploadURL, // id of an object this URL allows access to
+        ACL:'public-read',
         Expires: '300'  // A URL is only valid for 5 minutes
       })
 
-    return presignedUrl
+    return presignedUrl as string
 }
 
 
 export async function AllTodo(userId:string): Promise<TodoItem[]> {
     Logging.info('Inside All Todo function', userId)
-    const AllTodos = getAllTodo(userId)
-    return AllTodos
+   // const AllTodos = getAllTodo(userId)
+    return await getAllTodo(userId)
 }
 
 

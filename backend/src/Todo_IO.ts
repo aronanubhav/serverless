@@ -4,7 +4,7 @@ import {TodoItem} from '../src/models/TodoItem' //Importing TodoItem Data type f
 import {TodoDelete} from '../src/models/TodoDelete' //Importing TodoDelete Data type from models
 import {TodoUpdate} from '../src/models/TodoUpdate' //Importing TodoUpdate Data type from models
 import * as AWS from 'aws-sdk'
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import {DocumentClient } from 'aws-sdk/clients/dynamodb'
 import {createLogger} from '../src/utils/logger' //Importing createLogger for Logging events
 //import * as AWSXRay from 'aws-xray-sdk' 
 
@@ -22,6 +22,7 @@ export async function createTodo(ToDoitem: TodoItem): Promise<TodoItem> {
         TableName: process.env.DynamoDB_Table,
         Item: ToDoitem
       })
+      .promise()  //added later after getting 404 error on attachmentUrl
     return ToDoitem
 }
 
@@ -38,9 +39,12 @@ export async function getAllTodo(userId:string): Promise<TodoItem[]>{
   Logging.info('Inside All Todo function', userId)
     const output = await documentClient.query({//reference taken from: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeNames.html
         TableName: process.env.DynamoDB_Table,
-        KeyConditionExpression: '#userId = :userId',
+        KeyConditionExpression: '#userId = :i',
+        ExpressionAttributeNames: {
+          '#userId': 'userId'
+        },
         ExpressionAttributeValues: {
-          ':userId': userId
+          ':i': userId
         }
       })
       .promise()
@@ -52,8 +56,8 @@ export async function UpdateTodos(updateTodo:TodoUpdate,todoId:string, userId:st
     await documentClient.update({
         TableName: process.env.DynamoDB_Table,
         Key: {
-            "userId": userId,
-            "todoId": todoId
+            userId: userId,
+            todoId: todoId
           },
           UpdateExpression: "set #name=:name, dueDate=:dueDate, done=:done",
           ExpressionAttributeValues:{
@@ -68,7 +72,7 @@ export async function UpdateTodos(updateTodo:TodoUpdate,todoId:string, userId:st
 }
 
 
-// Create Dynamo Db
+// Create Dynamo Db client
 function createDynamoDBClient() {
     return new XAWS.DynamoDB.DocumentClient()
   }

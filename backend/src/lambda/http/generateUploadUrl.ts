@@ -9,7 +9,7 @@ const Logging = createLogger('generateUploadUrl.ts_logs') //Creating Logs file f
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
 
-  const uploadURLItem = uploadURL(todoId)
+  const uploadURLItem = await uploadURL(todoId)
 
   Logging.info('Upload URL generated',uploadURLItem,todoId) //Logging for uploadURL
 
@@ -26,7 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Headers': 'Accept'
     },
     body: JSON.stringify({
-      uploadURLItem: uploadURLItem
+      item: uploadURLItem
     })
 }
 }

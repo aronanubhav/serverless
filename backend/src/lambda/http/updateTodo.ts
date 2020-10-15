@@ -16,9 +16,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const user = getUserId(event) //to check authorized users access
   Logging.info('User access granted',user) //logging for user access
 
-  const updatedTodoItems = UpdateTodo(updatedTodo, todoId, user) //Get 
+  const item = await UpdateTodo(updatedTodo, todoId, user) //Get 
 
-  Logging.info('UpdatedTodoId',updatedTodoItems) //logging for Updated ToDo List
+  Logging.info('UpdatedTodoId',item) //logging for Updated ToDo List
 
   // TODO: Update a TODO item with the provided id using values in the "updatedTodo" object
   //Changed to return API Gateway Event
@@ -33,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         'Access-Control-Allow-Headers': 'Accept'
       },
       body: JSON.stringify({
-        updatedTodoItems: updatedTodoItems
+        item
       })
     }
 }

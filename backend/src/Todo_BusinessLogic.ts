@@ -18,7 +18,7 @@ import {UpdateTodos} from '../src/Todo_IO' //Import UpdateTodo from IO layer
 const s3 = new AWS.S3({
     signatureVersion: 'v4' // Use Sigv4 algorithm
   })
-  const current_date = new Date()
+const current_date = new Date()
  
 const Logging = createLogger('Todo_BusinessLogic.ts_logs') //Creating Logs file for Business Logic
 
@@ -30,7 +30,7 @@ export async function createNewTodoItem(newTodoItem: CreateTodoRequest, userId: 
         {//datatype as taken from Models
         userId: userId,
         todoId: TodoUUID,
-        createdAt: current_date.toDateString(), //added toDateString later to convert to string
+        createdAt: current_date.toISOString(), //added toDateString later to convert to string --> changed to toISOString
         name: newTodoItem.name,
         dueDate: newTodoItem.dueDate,
         done: false,
@@ -53,16 +53,16 @@ export async function deleteItem(TodoID:string, UserId: string): Promise<TodoDel
 }
 
 
-export async function uploadURL(UploadURL:string) {
+export async function uploadURL(UploadURL:string){
     Logging.info('Inside upload URL', UploadURL)
-    const presignedUrl = s3.getSignedUrl('putObject', { // The URL will allow to perform the PUT operation
+   // const presignedUrl = s3.getSignedUrl('putObject', { // The URL will allow to perform the PUT operation
+        return s3.getSignedUrl('putObject', { // The URL will allow to perform the PUT operation Changed to return URL
         Bucket: process.env.S3_BUCKET_NAME, // Name of an S3 bucket
         Key: UploadURL, // id of an object this URL allows access to
-        ACL:'public-read',
         Expires: '300'  // A URL is only valid for 5 minutes
       })
 
-    return presignedUrl as string
+    //return presignedUrl
 }
 
 

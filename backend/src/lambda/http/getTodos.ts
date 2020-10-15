@@ -12,9 +12,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   
  const user = getUserId(event) //to check authorized users access
 
- const AllTodoItems = AllTodo(user) //Fetch all Todos for a user
+ const items = await AllTodo(user) //Fetch all Todos for a user
 
- Logging.info('Todo List for user',AllTodoItems,user) //logging all items for the user
+ Logging.info('Todo List for user',items,user) //logging all items for the user
 
  //Changed to return API Gateway Event
 //return AllTodoItems //return Todo IDs for the user
@@ -28,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Headers': 'Accept'
     },
     body: JSON.stringify({
-      AllTodoItems: AllTodoItems
+      items
     })
   }
 }

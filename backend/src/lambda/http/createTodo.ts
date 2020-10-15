@@ -16,9 +16,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   
   Logging.info('User access granted',user) //logging for user access
 
-  const newTodoItem = await createNewTodoItem(newTodo , user) //CreateTodo function called from Business Logic
+  const newItem = await createNewTodoItem(newTodo , user) //CreateTodo function called from Business Logic
 
-  Logging.info('New Todo Item created',newTodoItem) //logging for new Todo Item
+  Logging.info('New Todo Item created',newItem) //logging for new Todo Item
 
   // TODO: Implement creating a new TODO item
   //Changed to return API Gateway Event
@@ -33,7 +33,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Headers': 'Accept'
     },
     body: JSON.stringify({
-      newTodoItem: newTodoItem
+      item: {
+        ...newItem
+      }
     })
   }
 }

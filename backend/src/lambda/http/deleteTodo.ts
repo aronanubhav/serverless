@@ -15,9 +15,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   
   Logging.info('User access granted',user) //logging for user access
 
-  const deleteTodoItem = await deleteItem(todoId , user) //DeleteTodo function called from Business Logic
+  const item = await deleteItem(todoId , user) //DeleteTodo function called from Business Logic
 
-  Logging.info('Item Deleted',deleteTodoItem) //logging for deletedTodo Item
+  Logging.info('Item Deleted',item) //logging for deletedTodo Item
 
 
   // TODO: Remove a TODO item by id
@@ -33,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Headers': 'Accept'
     },
     body: JSON.stringify({
-      deleteTodoItem: deleteTodoItem
+      item: item
     })
   }
 }

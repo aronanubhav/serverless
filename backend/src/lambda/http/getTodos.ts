@@ -28,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Headers': 'Accept'
     },
     body: JSON.stringify({
-      item: AllTodoItems
+      AllTodoItems: AllTodoItems
     })
   }
 }

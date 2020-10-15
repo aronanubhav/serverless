@@ -118,10 +118,11 @@ resources:
     #S3 bucket reference taken from: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
     # Bucket sample taken from: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-policy.html
     #Referred Git code for CorsRules: https://github.com/Neehi/udacity-serverless-todo.git
+    #Reference: https://knowledge.udacity.com/questions/226133
     AttachmentsBucket:
       Type: 'AWS::S3::Bucket'
       Properties:
-        BucketName: sls2-bucket-${self:provider.stage}
+        BucketName: ${self:provider.environment.S3_BUCKET_NAME} #Changeed to defined env variable to see if this was the error with S3
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:

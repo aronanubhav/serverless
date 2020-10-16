@@ -34,7 +34,7 @@ export async function createNewTodoItem(newTodoItem: CreateTodoRequest, userId: 
         name: newTodoItem.name,
         dueDate: newTodoItem.dueDate,
         done: false,
-        attachmentUrl: 'https://'+process.env.S3_BUCKET_NAME+'.s3-website-eu-west-1.amazonaws.com/'+TodoUUID //changed ' from overall to support variables
+        attachmentUrl: 'https://'+process.env.S3_BUCKET_NAME+'.s3-eu-west-1.amazonaws.com/'+TodoUUID //changed ' from overall to support variables
     }
     )
     return newItem

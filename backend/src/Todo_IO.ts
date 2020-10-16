@@ -32,6 +32,7 @@ export async function deleteTodo(TodoItemDelete: TodoDelete): Promise<TodoDelete
         TableName: process.env.DynamoDB_Table,
         Key: TodoItemDelete
       })
+      .promise() //added later as the entry was not getting deleted from dB
     return TodoItemDelete 
 }
 
